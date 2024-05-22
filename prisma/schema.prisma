@@ -44,8 +44,7 @@ model Diploma {
   name        String
   teacher     UserD        @relation("teacherDiplomas", fields: [teacherId], references: [id])
   teacherId   Int
-  steps       Step[]      // Reference to the Step model for each step of the diploma process
-  file        String      // Path to the PDF file of the diploma
+  steps       Step[]       // Path to the PDF file of the diploma
   status      DiplomaStatus // Enum type for diploma status (pending, approved, rejected)
   finalPoints Int?        // Points given by teacher in the 5th step
 
@@ -72,7 +71,8 @@ model Step {
   status      StepStatus
   stepNumber  Int       // Step number in the diploma process
   comments    Comment[] // Reference to the Comment model for comments in each step
-
+      // Reference to the Step model for each step of the diploma process
+  file        String 
   @@map("steps")
 }
 

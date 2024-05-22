@@ -1,4 +1,4 @@
-// Header.js
+"use client";
 import Link from "next/link";
 import React from "react";
 
@@ -13,9 +13,9 @@ function Header() {
         <div className="flex items-center gap-10 text-xl">
           <Link href="/">Home page</Link>
           <Link href="/diploma">Diploma</Link>
-          {localStorage?.getItem("role") && (
+          {/* {localStorage && localStorage?.getItem("role") && (
             <Link href="/process">Process</Link>
-          )}{" "}
+          )}{" "} */}
           <Link href="/login">login</Link>
         </div>
       </div>

@@ -24,15 +24,8 @@ async function loginUserHandler(req: NextApiRequest, res: NextApiResponse) {
     return res.status(400).json({ message: "invalid inputs" });
   }
   try {
-    const user = await db.userD.findFirst({
+    const user: any = await db.userD.findFirst({
       where: { username: username },
-      select: {
-        id: true
-      }
-    });
-
-    const user_data = await db.userD.findFirst({
-      where: { id: user?.id },
       select: {
         id: true,
         username: true,
@@ -40,15 +33,15 @@ async function loginUserHandler(req: NextApiRequest, res: NextApiResponse) {
         password_hash: true
       }
     });
-    console.log(user_data, user);
-    if (user && user_data?.password_hash === hashPassword(password)) {
+
+    if (user && user?.password_hash === hashPassword(password)) {
       const token = generateToken({
         userId: `${user.id}`,
-        role: user_data.role
+        role: user.role
       });
       return res
         .status(200)
-        .json({ ...exclude(user, ["password"]), token, role: user_data.role });
+        .json({ ...exclude(user, ["password"]), token, ...user });
     } else {
       return res.status(401).json({ message: "invalid credentials" });
     }

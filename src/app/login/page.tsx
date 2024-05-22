@@ -34,7 +34,12 @@ const SignInPage: FC = function () {
       const data = await response.json();
       localStorage.setItem("token", data?.token);
       localStorage.setItem("role", data?.role);
-      push("/process");
+      localStorage.setItem("user", JSON.stringify(data));
+      if (data?.role === "STUDENT") {
+        push("/process");
+      } else {
+        push("/processTeacher");
+      }
       console.log("User login:", data);
     } else {
       console.error("Failed to create user");

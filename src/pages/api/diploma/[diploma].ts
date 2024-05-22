@@ -1,34 +1,31 @@
-// pages/api/coworker/[coworkerid].ts
+// pages/api/coworker/[diploma].ts
 import db from "@/modules/db";
 import { NextApiRequest, NextApiResponse } from "next";
 
 async function getStaff(req: NextApiRequest, res: NextApiResponse) {
-  const { staff_account } = req.query;
+  const { diploma: diplomaId } = req.query;
 
   try {
-    if (!staff_account) {
-      return res.status(404).json({ message: "user not found" });
+    if (!diplomaId) {
+      return res.status(404).json({ message: "Coworker ID not provided" });
     }
-    const user = await db.staffAccount.findUnique({
+
+    const diploma = await db.diploma.findUnique({
       where: {
-        id: +staff_account
+        id: +diplomaId
       },
       select: {
+        steps: true,
         id: true,
-        user: true,
-        email: true,
-        created_at: true,
-        roleId: true,
+        teacherId: true,
+        student: true,
+        finalPoints: true
       }
     });
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json(user);
+    return res.status(200).json({ diploma });
   } catch (error) {
-    console.error("Error fetching coworker:", error);
+    console.error("Error fetching diploma:", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
